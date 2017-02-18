@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "5FC03D78A9148D0F28B73F046A2D2DE756050394",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "C632069F54D7869EBA29E3A2B5082E792F963E54" : 9223372036854775807,
+    "5FC03D78A9148D0F28B73F046A2D2DE756050394" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "09228B3C-E2F7-411E-8BFE-00D7C7FC4EE4",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "C632069F54D7869EBA29E3A2B5082E792F963E54" : "DailyLabs\/Pods\/",
+    "5FC03D78A9148D0F28B73F046A2D2DE756050394" : "DailyLabs\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "DailyLabs",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "DailyLabs.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/mrkulik\/DailyLabs-ios.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "5FC03D78A9148D0F28B73F046A2D2DE756050394"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/mrkulik\/DailyLabs.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "C632069F54D7869EBA29E3A2B5082E792F963E54"
+    }
+  ]
+}

@@ -109,15 +109,17 @@ class LabsViewController: UIViewController, UITableViewDelegate, UITableViewData
             doneTitle = "Update"
         }
         
-        let alertController = UIAlertController(title: title, message: "Write the name of your lab.", preferredStyle: UIAlertControllerStyle.alert)
+        let alertController = UIAlertController(title: title, message: "Write the name and description of your lab.", preferredStyle: UIAlertControllerStyle.alert)
         let createAction = UIAlertAction(title: doneTitle, style: UIAlertActionStyle.default) { (action) -> Void in
             
-            let labName = alertController.textFields?.first?.text
+            let labName = alertController.textFields?[0].text
+            let labNotes = alertController.textFields?[1].text
             
             if updatedLab != nil{
                 // update mode
                 try! dlRealm.write{
                     updatedLab.name = labName!
+                    updatedLab.notes = labNotes!
                     self.readLabsAndUpateUI()
                 }
             }
@@ -125,6 +127,7 @@ class LabsViewController: UIViewController, UITableViewDelegate, UITableViewData
                 
                 let newLab = Lab()
                 newLab.name = labName!
+                newLab.notes = labNotes!
                 
                 try! dlRealm.write{
                     
@@ -148,6 +151,15 @@ class LabsViewController: UIViewController, UITableViewDelegate, UITableViewData
             if updatedLab != nil{
                 textField.text = updatedLab.name
             }
+        }
+        
+        alertController.addTextField { (textField) -> Void in
+            textField.placeholder = "Lab description"
+            textField.addTarget(self, action: #selector(LabsViewController.labNameFieldDidChange(_:)), for: UIControlEvents.editingChanged)
+            if updatedLab != nil{
+                textField.text = updatedLab.notes
+            }
+            
         }
         
         self.present(alertController, animated: true, completion: nil)

@@ -50,15 +50,16 @@ class SubjectsViewController: UIViewController, UITableViewDelegate, UITableView
             doneTitle = "Update"
         }
         
-        let alertController = UIAlertController(title: title, message: "Write the name of your subject.", preferredStyle: UIAlertControllerStyle.alert)
+        let alertController = UIAlertController(title: title, message: "Write the name and description of your subject.", preferredStyle: UIAlertControllerStyle.alert)
         let createAction = UIAlertAction(title: doneTitle, style: UIAlertActionStyle.default) { (action) -> Void in
             
-            let subjectName = alertController.textFields?.first?.text
-            
+            let subjectName = alertController.textFields![0].text
+            let subjectNote = alertController.textFields![1].text
             if updatedSubject != nil{
                 // update mode
                 try! dlRealm.write{
                     updatedSubject.name = subjectName!
+                    updatedSubject.notes = subjectNote!
                     self.readSubjectsAndUpdateUI()
                 }
             }
@@ -66,7 +67,7 @@ class SubjectsViewController: UIViewController, UITableViewDelegate, UITableView
                 
                 let newSubject = Subject()
                 newSubject.name = subjectName!
-                
+                newSubject.notes = subjectNote!
                 try! dlRealm.write{
                     
                     dlRealm.add(newSubject)
@@ -75,6 +76,7 @@ class SubjectsViewController: UIViewController, UITableViewDelegate, UITableView
             }
             
             print(subjectName ?? "")
+            print(subjectNote ?? "")
         }
         
         alertController.addAction(createAction)
@@ -89,6 +91,16 @@ class SubjectsViewController: UIViewController, UITableViewDelegate, UITableView
             if updatedSubject != nil{
                 textField.text = updatedSubject.name
             }
+
+        }
+        
+        alertController.addTextField { (textField) -> Void in
+            textField.placeholder = "Subject description"
+            textField.addTarget(self, action: #selector(SubjectsViewController.subjectNameFieldDidChange(_:)), for: UIControlEvents.editingChanged)
+            if updatedSubject != nil{
+                textField.text = updatedSubject.notes
+            }
+            
         }
         
         self.present(alertController, animated: true, completion: nil)
