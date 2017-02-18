@@ -19,7 +19,6 @@ class SubjectsViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var subjectsTableView: UITableView!
     
     override func viewWillAppear(_ animated: Bool) {
-        subjectsTableView.separatorStyle = .none
         subjectsTableView.rowHeight = 65.0
         readSubjectsAndUpdateUI()
     }
@@ -31,11 +30,6 @@ class SubjectsViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     // MARK: - User Actions -
-    
-    @IBAction func didClickOnEditButton(_ sender: UIBarButtonItem) {
-        isEditingMode = !isEditingMode
-        self.subjectsTableView.setEditing(isEditingMode, animated: true)
-    }
     
     @IBAction func didClickOnAddButton(_ sender: UIBarButtonItem) {
         
@@ -137,7 +131,8 @@ class SubjectsViewController: UIViewController, UITableViewDelegate, UITableView
         }
         
         let editAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "Edit") { (editAction, indexPath) -> Void in
-            
+            self.isEditingMode = !self.isEditingMode
+            self.subjectsTableView.setEditing(self.isEditingMode, animated: true)
             // Editing will go here
             let listToBeUpdated = self.subjects[indexPath.row]
             self.displayAlertToAddSubject(listToBeUpdated)
@@ -156,10 +151,10 @@ class SubjectsViewController: UIViewController, UITableViewDelegate, UITableView
     func colorForIndex(index: Int) -> UIColor {
         let subjectsCount = subjects.count - 1
         if subjectsCount == 0{
-            return UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
+            return UIColor(red:0.20, green:0.47, blue:0.90, alpha:1.0)
         }
-        let val = (CGFloat(index) / CGFloat(subjectsCount)) * 0.6
-        return UIColor(red: 0.0, green: val, blue: 1.0, alpha: 1.0)
+        let val = (CGFloat(index) / CGFloat(subjectsCount)) * 0.3
+        return UIColor(red:0.20, green:val, blue:0.90, alpha:1.0)
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,

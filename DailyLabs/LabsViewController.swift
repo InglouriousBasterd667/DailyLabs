@@ -53,11 +53,6 @@ class LabsViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     // MARK: - User Actions -
     
-    @IBAction func didClickOnEditLabs(_ sender: UIBarButtonItem) {
-        isEditingMode = !isEditingMode
-        self.labsTableView.setEditing(isEditingMode, animated: true)
-    }
-    
     @IBAction func didClickOnAddLab(_ sender: UIBarButtonItem) {
         self.displayAlertToAddLab(nil)
     }
@@ -166,7 +161,7 @@ class LabsViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
 
-        let deleteAction = UITableViewRowAction(style: .default, title: "Delete") { (deleteAction, indexPath) -> Void in
+        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "\u{1F5D1}") { (deleteAction, indexPath) -> Void in
             
             //Deletion will go here
             
@@ -184,9 +179,11 @@ class LabsViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
         }
         
-        let editAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "Edit") { (editAction, indexPath) -> Void in
+        let editAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "\u{2026}") { (editAction, indexPath) -> Void in
             
             // Editing will go here
+            self.isEditingMode = !self.isEditingMode
+            self.labsTableView.setEditing(self.isEditingMode, animated: true)
             var labToBeUpdated: Lab!
             if indexPath.section == 0{
                 labToBeUpdated = self.todoLabs[indexPath.row]
@@ -199,19 +196,23 @@ class LabsViewController: UIViewController, UITableViewDelegate, UITableViewData
             
         }
         
-        let doneAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "Done") { (doneAction, indexPath) -> Void in
+        let doneAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "\u{2713}") { (doneAction, indexPath) -> Void in
             
             // Editing will go here
             var labToBeUpdated: Lab!
             if indexPath.section == 0{
                 labToBeUpdated = self.todoLabs[indexPath.row]
+                try! dlRealm.write{
+                    labToBeUpdated.isCompleted = true
+                    self.readLabsAndUpateUI()
+                }
             }
             else{
                 labToBeUpdated = self.completedLabs[indexPath.row]
-            }
-            try! dlRealm.write{
-                labToBeUpdated.isCompleted = true
-                self.readLabsAndUpateUI()
+                try! dlRealm.write{
+                    labToBeUpdated.isCompleted = false
+                    self.readLabsAndUpateUI()
+                }
             }
             
         }
@@ -225,7 +226,7 @@ class LabsViewController: UIViewController, UITableViewDelegate, UITableViewData
         if todoLabsCount == 0{
             return UIColor(red:0.86, green:0.04, blue:0.04, alpha:1.0)
         }
-        let val = (CGFloat(index) / CGFloat(todoLabsCount)) * 0.2
+        let val = (CGFloat(index) / CGFloat(todoLabsCount)) * 0.1
         return UIColor(red:0.86, green:val, blue:0.04, alpha:1.0)
     }
     
