@@ -18,8 +18,13 @@ class SubjectsViewController: UIViewController, UITableViewDelegate, UITableView
     var currentCreateAction:UIAlertAction!
     @IBOutlet weak var subjectsTableView: UITableView!
     
-    override func viewWillAppear(_ animated: Bool) {
+    override func viewDidLoad() {
         subjectsTableView.rowHeight = 65.0
+        jsonGet()
+        super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         readSubjectsAndUpdateUI()
     }
     
@@ -27,6 +32,53 @@ class SubjectsViewController: UIViewController, UITableViewDelegate, UITableView
         subjects = dlRealm.objects(Subject.self)
         self.subjectsTableView.setEditing(false, animated: true)
         self.subjectsTableView.reloadData()
+    }
+    
+    func jsonGet(){
+        let requestURL: NSURL = NSURL(string: "http://dailylabs.herokuapp.com/api/test/diary.json")!
+        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(url: requestURL as URL)
+        let session = URLSession.shared
+        let task = session.dataTask(with: urlRequest as URLRequest) {
+            (data, response, error) -> Void in
+            
+            let httpResponse = response as! HTTPURLResponse
+            let statusCode = httpResponse.statusCode
+            
+            print(httpResponse)
+            
+            if (statusCode == 200) {
+                do {
+                    if let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as? [String:Any] {
+                        print(json)
+                        
+                    if let subjectsJSON = json["subjects"] as? [[String: AnyObject]] {
+                        
+                        for subject in subjectsJSON {
+                            let subJSON = SubjectJSON()
+                            if let name = subject["name"] as? String {
+                                subJSON.name = name
+                                if let notes = subject["description"] as? String {
+                                    subJSON.notes = notes
+                                    self.jsonToRealm(subs: subJSON)
+                                    print(name,notes)
+                                }
+                            }
+                        }
+                        }
+                    }
+                } catch let err{
+                    print(err.localizedDescription)
+                }
+            }
+        }
+        task.resume()
+        
+    }
+    
+    func jsonToRealm(subs: SubjectJSON) {
+        let sub = Subject()
+        sub.name = subs.name
+        sub.notes = subs.notes
     }
     
     // MARK: - User Actions -
@@ -91,7 +143,6 @@ class SubjectsViewController: UIViewController, UITableViewDelegate, UITableView
             if updatedSubject != nil{
                 textField.text = updatedSubject.name
             }
-
         }
         
         alertController.addTextField { (textField) -> Void in

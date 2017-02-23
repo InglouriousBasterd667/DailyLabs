@@ -15,7 +15,6 @@ class Lab: Object {
     dynamic var notes = ""
     dynamic var isCompleted = false
     
-    
     // Specify properties to ignore (Realm won't persist these)
     
     //  override static func ignoredProperties() -> [String] {
