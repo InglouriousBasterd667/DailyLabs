@@ -17,6 +17,7 @@
 		009CDE431E4A64A700429BE1 /* DailyLabsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009CDE421E4A64A700429BE1 /* DailyLabsUITests.swift */; };
 		00D97B561E5645470044BD53 /* LabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D97B551E5645470044BD53 /* LabsViewController.swift */; };
 		00D97B5A1E56458B0044BD53 /* SubjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D97B591E56458B0044BD53 /* SubjectsViewController.swift */; };
+		00F76C941E8B12B40041BDCD /* Const.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F76C931E8B12B40041BDCD /* Const.swift */; };
 		1D4C12B115A61D2C2400A18E /* Pods_DailyLabsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D0AA15EB02D3B7A1CDEEE5 /* Pods_DailyLabsTests.framework */; };
 		4E86CC00DB4ABBDC2A02A358 /* Pods_DailyLabsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D66DA86BD7178338E37B4638 /* Pods_DailyLabsUITests.framework */; };
 		BAFC1864BEF2526C258648BA /* Pods_DailyLabs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E8569D5F7091AEB029ECAE4 /* Pods_DailyLabs.framework */; };
@@ -56,6 +57,7 @@
 		009CDE441E4A64A700429BE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00D97B551E5645470044BD53 /* LabsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabsViewController.swift; sourceTree = "<group>"; };
 		00D97B591E56458B0044BD53 /* SubjectsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubjectsViewController.swift; sourceTree = "<group>"; };
+		00F76C931E8B12B40041BDCD /* Const.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Const.swift; sourceTree = "<group>"; };
 		02FB39DE620B28B1D00E2A83 /* Pods-DailyLabsUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DailyLabsUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DailyLabsUITests/Pods-DailyLabsUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		185C695E7D0617CC4D3C656C /* Pods-DailyLabs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DailyLabs.release.xcconfig"; path = "Pods/Target Support Files/Pods-DailyLabs/Pods-DailyLabs.release.xcconfig"; sourceTree = "<group>"; };
 		23D0AA15EB02D3B7A1CDEEE5 /* Pods_DailyLabsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DailyLabsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -120,15 +122,14 @@
 		009CDE211E4A64A700429BE1 /* DailyLabs */ = {
 			isa = PBXGroup;
 			children = (
+				00F76C931E8B12B40041BDCD /* Const.swift */,
+				00F76C921E8B12650041BDCD /* Model */,
+				00F76C911E8B12620041BDCD /* Controller */,
 				009CDE221E4A64A700429BE1 /* AppDelegate.swift */,
-				002ED6BC1E54E537007D6023 /* Lab.swift */,
-				002ED6B71E54CA11007D6023 /* Subject.swift */,
 				009CDE261E4A64A700429BE1 /* Main.storyboard */,
 				009CDE291E4A64A700429BE1 /* Assets.xcassets */,
 				009CDE2B1E4A64A700429BE1 /* LaunchScreen.storyboard */,
 				009CDE2E1E4A64A700429BE1 /* Info.plist */,
-				00D97B551E5645470044BD53 /* LabsViewController.swift */,
-				00D97B591E56458B0044BD53 /* SubjectsViewController.swift */,
 			);
 			path = DailyLabs;
 			sourceTree = "<group>";
@@ -149,6 +150,24 @@
 				009CDE441E4A64A700429BE1 /* Info.plist */,
 			);
 			path = DailyLabsUITests;
+			sourceTree = "<group>";
+		};
+		00F76C911E8B12620041BDCD /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				00D97B551E5645470044BD53 /* LabsViewController.swift */,
+				00D97B591E56458B0044BD53 /* SubjectsViewController.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		00F76C921E8B12650041BDCD /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				002ED6BC1E54E537007D6023 /* Lab.swift */,
+				002ED6B71E54CA11007D6023 /* Subject.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		0FA59D2BB41F4CA0060040A1 /* Pods */ = {
@@ -463,6 +482,7 @@
 				009CDE231E4A64A700429BE1 /* AppDelegate.swift in Sources */,
 				002ED6BD1E54E537007D6023 /* Lab.swift in Sources */,
 				00D97B561E5645470044BD53 /* LabsViewController.swift in Sources */,
+				00F76C941E8B12B40041BDCD /* Const.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

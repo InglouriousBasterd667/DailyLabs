@@ -51,20 +51,7 @@ class SubjectsViewController: UIViewController, UITableViewDelegate, UITableView
                     if let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as? [String:Any] {
                         print(json)
                         
-                    if let subjectsJSON = json["subjects"] as? [[String: AnyObject]] {
-                        
-                        for subject in subjectsJSON {
-                            let subJSON = SubjectJSON()
-                            if let name = subject["name"] as? String {
-                                subJSON.name = name
-                                if let notes = subject["description"] as? String {
-                                    subJSON.notes = notes
-                                    self.jsonToRealm(subs: subJSON)
-                                    print(name,notes)
-                                }
-                            }
-                        }
-                        }
+                
                     }
                 } catch let err{
                     print(err.localizedDescription)
@@ -73,12 +60,6 @@ class SubjectsViewController: UIViewController, UITableViewDelegate, UITableView
         }
         task.resume()
         
-    }
-    
-    func jsonToRealm(subs: SubjectJSON) {
-        let sub = Subject()
-        sub.name = subs.name
-        sub.notes = subs.notes
     }
     
     // MARK: - User Actions -

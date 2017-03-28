@@ -9,12 +9,6 @@
 import Foundation
 import RealmSwift
 
-class SubjectJSON {
-    var name = ""
-    var notes = ""
-    let labs = List<Lab>()
-}
-
 class Subject: Object {
     
     dynamic var name = ""
