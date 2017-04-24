@@ -8,20 +8,71 @@
 
 import UIKit
 import RealmSwift
+import SWXMLHash
 
 class SubjectsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var subjects : Results<Subject>!
-    
-    var isEditingMode = false
-    
-    var currentCreateAction:UIAlertAction!
     @IBOutlet weak var subjectsTableView: UITableView!
     
+    var subjects : Results<Subject>! {
+        didSet {
+            self.subjectsTableView.setEditing(false, animated: true)
+            self.subjectsTableView.reloadData()
+        }
+    }
+    
+    var subjectsNames = Set<String>()
+    var isEditingMode = false
+    var currentCreateAction:UIAlertAction!
+    var groupsToID = [String:String]()
+    
+    let downloadCanceledNotification = Notification.Name(rawValue: "downloadCanceled")
+    
+    
     override func viewDidLoad() {
+        // For Tests only!
+        try! dlRealm.write {
+            dlRealm.deleteAll()
+        }
+        
         subjectsTableView.rowHeight = 65.0
-        jsonGet()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(cancelDownload),
+                                               name: downloadCanceledNotification,
+                                               object: nil)
+        startDownload()
         super.viewDidLoad()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc fileprivate func cancelDownload() {
+        DispatchQueue.main.sync {
+            try? dlRealm.write {
+                for subjectName in subjectsNames {
+                    let subj = Subject()
+                    subj.name = subjectName
+                    dlRealm.add(subj)
+                }
+                subjects = dlRealm.objects(Subject.self)
+            }
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
+    
+    fileprivate func startDownload() {
+        if let vc = storyboard?.instantiateViewController(withIdentifier: "Splash") {
+            present(vc, animated: false)
+            XMLFetcher.fetch(from: Const.studentGroupsURL) { xml in
+                self.groupsToID = BSUIRXMLParser.parseGroupsID(xml)
+                XMLFetcher.fetch(from: Const.scheduleURL.appendingPathComponent(self.groupsToID["453503"] ?? "")) { xml in
+                    self.subjectsNames = BSUIRXMLParser.parseSubjects(xml)
+                    NotificationCenter.default.post(Notification(name: self.downloadCanceledNotification))
+                }
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -33,35 +84,7 @@ class SubjectsViewController: UIViewController, UITableViewDelegate, UITableView
         self.subjectsTableView.setEditing(false, animated: true)
         self.subjectsTableView.reloadData()
     }
-    
-    func jsonGet(){
-        let requestURL: NSURL = NSURL(string: "http://dailylabs.herokuapp.com/api/test/diary.json")!
-        let urlRequest: NSMutableURLRequest = NSMutableURLRequest(url: requestURL as URL)
-        let session = URLSession.shared
-        let task = session.dataTask(with: urlRequest as URLRequest) {
-            (data, response, error) -> Void in
-            
-            let httpResponse = response as! HTTPURLResponse
-            let statusCode = httpResponse.statusCode
-            
-            print(httpResponse)
-            
-            if (statusCode == 200) {
-                do {
-                    if let json = try JSONSerialization.jsonObject(with: data!, options:.allowFragments) as? [String:Any] {
-                        print(json)
-                        
-                
-                    }
-                } catch let err{
-                    print(err.localizedDescription)
-                }
-            }
-        }
-        task.resume()
-        
-    }
-    
+   
     // MARK: - User Actions -
     
     @IBAction func didClickOnAddButton(_ sender: UIBarButtonItem) {
@@ -90,7 +113,7 @@ class SubjectsViewController: UIViewController, UITableViewDelegate, UITableView
             let subjectNote = alertController.textFields![1].text
             if updatedSubject != nil{
                 // update mode
-                try! dlRealm.write{
+                try! dlRealm.write {
                     updatedSubject.name = subjectName!
                     updatedSubject.notes = subjectNote!
                     self.readSubjectsAndUpdateUI()
@@ -142,7 +165,7 @@ class SubjectsViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        if let listsTasks = subjects{
+        if let listsTasks = subjects {
             return listsTasks.count
         }
         return 0
@@ -187,7 +210,6 @@ class SubjectsViewController: UIViewController, UITableViewDelegate, UITableView
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         self.performSegue(withIdentifier: "openLabs", sender: self.subjects[indexPath.row])
     }
     

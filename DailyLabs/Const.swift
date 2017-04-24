@@ -10,6 +10,6 @@ import Foundation
 
 class Const {
     
-    
-    
+    static let studentGroupsURL = URL(string: "https://www.bsuir.by/schedule/rest/studentGroup")!
+    static let scheduleURL = URL(string: "https://www.bsuir.by/schedule/rest/schedule")!
 }

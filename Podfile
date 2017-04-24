@@ -6,6 +6,7 @@ target 'DailyLabs' do
   use_frameworks!
   pod 'RealmSwift'
 
+  pod 'SWXMLHash', '~> 3.0.0'
   # Pods for DailyLabs
 
   target 'DailyLabsTests' do
